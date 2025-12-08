@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "start": "tsx app.ts",
-    "dev": "tsx watch app.ts"
+    "dev": "tsx watch app.ts",
+    "data": "prisma studio --browser none"
   },
   "repository": {
     "type": "git",
