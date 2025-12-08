@@ -1,9 +1,12 @@
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import "dotenv/config";
+import "./config/passport";
 import express from "express";
 import path from "node:path";
 import { prisma } from "./lib/prisma";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
+import passport from "passport";
+import indexRouter from "./routes/indexRouter";
 
 const app = express();
 
@@ -33,3 +36,18 @@ app.use(
     },
   })
 );
+
+app.use(passport.session());
+
+app.use(indexRouter);
+
+app.use((err: any, _: any, res: any, __: any) => {
+  console.error(err);
+  res.status(err.statusCode || 500).send(err.message);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, (error) => {
+  if (error) throw error;
+  console.log(`Server running on port ${PORT}`);
+});
