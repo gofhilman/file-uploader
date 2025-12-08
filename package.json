@@ -22,6 +22,7 @@
   "homepage": "https://github.com/gofhilman/file-uploader#readme",
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/express-session": "^1.18.2",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
     "prisma": "^7.1.0",
