@@ -26,25 +26,34 @@ model Folder {
   id           Int      @id @default(autoincrement())
   name         String
   parentId     Int?
-  parent       Folder?  @relation("ParentChildren", fields: [parentId], references: [id])
+  parent       Folder?  @relation("ParentChildren", fields: [parentId], references: [id], onDelete: Cascade)
   childFolders Folder[] @relation("ParentChildren")
   files        File[]
   createdAt    DateTime @default(now())
-  user         User?    @relation(fields: [userId], references: [id])
-  userId       Int?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  shared       Shared?
 }
 
 model File {
-  id       Int     @id @default(autoincrement())
-  name     String
-  user     User?   @relation(fields: [userId], references: [id])
-  userId   Int?
-  folder   Folder? @relation(fields: [folderId], references: [id])
-  folderId Int?
+  id         Int      @id @default(autoincrement())
+  name       String
+  url        String
+  size       BigInt
+  uploadedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId   Int
 }
 
 model Shared {
-  id     Int   @id @default(autoincrement())
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  id        Int      @id @default(autoincrement())
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  Int      @unique
+  url       String
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
 }
