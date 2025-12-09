@@ -3,8 +3,10 @@ import isAuth from "../middleware/auth";
 import {
   folderGet,
   loginFormGet,
+  loginFormPost,
   redirectIndex,
   signupFormGet,
+  signupFormPost,
 } from "../controllers/indexController";
 
 const indexRouter = Router();
@@ -15,8 +17,8 @@ indexRouter.get("/signup", signupFormGet);
 indexRouter.get("/:fileId/download", isAuth);
 indexRouter.get("/:folderId", isAuth, folderGet);
 
-// indexRouter.post("/login");
-// indexRouter.post("/signup");
+indexRouter.post("/login", loginFormPost);
+indexRouter.post("/signup", signupFormPost);
 // indexRouter.post("/:folderId/create-folder");
 // indexRouter.post("/:folderId/rename-folder");
 // indexRouter.post("/:folderId/delete-folder");

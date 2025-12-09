@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
+  id       String   @id @default(uuid())
   username String   @unique
   password String
   folders  Folder[]
@@ -23,39 +23,39 @@ model User {
 }
 
 model Folder {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   name         String
-  parentId     Int?
+  parentId     String?
   parent       Folder?  @relation("ParentChildren", fields: [parentId], references: [id], onDelete: Cascade)
   childFolders Folder[] @relation("ParentChildren")
   files        File[]
   createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int
+  userId       String
   shared       Shared?
 }
 
 model File {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   name       String
   url        String
   size       BigInt
   uploadedAt DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
+  userId     String
   folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  folderId   Int
+  folderId   String
 }
 
 model Shared {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  folderId  Int      @unique
+  folderId  String   @unique
   url       String
   createdAt DateTime @default(now())
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
 }
 
 model Session {
