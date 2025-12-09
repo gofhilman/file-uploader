@@ -1,0 +1,16 @@
+<main>
+  <form action="/login" method="post">
+    <h2 class="page-title"><%= title %></h2>
+    <%- include("partials/errors.ejs") %> <% if (locals.message) { %>
+    <p class="error-msg"><%= message %></p>
+    <% } %>
+    <div class="form-body">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" required />
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required />
+    </div>
+    <button>Log in</button>
+  </form>
+  <p>Don't have an account? Sign up <a href="/signup">here</a>.</p>
+</main>

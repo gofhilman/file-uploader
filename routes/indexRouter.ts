@@ -1,10 +1,12 @@
 import { Router } from "express";
+import isAuth from "../middleware/auth";
+import { redirectIndex } from "../controllers/indexController";
 
 const indexRouter = Router();
 
-indexRouter.get("/");
-indexRouter.get("/:folderId");
-indexRouter.get("/:fileId/download");
+indexRouter.get("/", isAuth, redirectIndex);
+indexRouter.get("/:folderId", isAuth);
+indexRouter.get("/:fileId/download", isAuth);
 indexRouter.get("/login");
 indexRouter.get("/signup");
 
