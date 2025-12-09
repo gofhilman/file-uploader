@@ -1,12 +1,16 @@
 import "dotenv/config";
 import "./config/passport";
 import express from "express";
-import path from "node:path";
+import path from "path";
+import { fileURLToPath } from "url";
 import { prisma } from "./lib/prisma";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
 import passport from "passport";
 import indexRouter from "./routes/indexRouter";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
