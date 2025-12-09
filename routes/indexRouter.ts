@@ -8,6 +8,7 @@ import {
   signupFormGet,
   signupFormPost,
 } from "../controllers/indexController";
+import { validateLogin, validateSignup } from "../middleware/formValidation";
 
 const indexRouter = Router();
 
@@ -17,8 +18,8 @@ indexRouter.get("/signup", signupFormGet);
 indexRouter.get("/:fileId/download", isAuth);
 indexRouter.get("/:folderId", isAuth, folderGet);
 
-indexRouter.post("/login", loginFormPost);
-indexRouter.post("/signup", signupFormPost);
+indexRouter.post("/login", validateLogin, loginFormPost);
+indexRouter.post("/signup", validateSignup, signupFormPost);
 // indexRouter.post("/:folderId/create-folder");
 // indexRouter.post("/:folderId/rename-folder");
 // indexRouter.post("/:folderId/delete-folder");
