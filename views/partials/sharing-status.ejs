@@ -1,0 +1,36 @@
+<dialog id="share-status">
+  <h4>Share status</h4>
+  <div>
+    <p>Folder name:</p>
+    <p><%= folder.name %></p>
+    <p>Status:</p>
+    <% if (folder.shared === null) { %>
+    <p>Private</p>
+    <% } else { %>
+    <p>Shared</p>
+    <p>Shareable link:</p>
+    <div>
+      <p><%= folder.shared.url %></p>
+      <button><span>Copy link</span></button>
+    </div>
+    <p>Valid until <%= folder.shared.expiredAt %></p>
+    <% } %>
+  </div>
+  <form action="<%= `/${folder.id}/delete-folder` %>" method="post">
+    <div>
+      <label for="share">Share this folder?</label>
+      <select name="share" id="share">
+        <option value="">Select an option</option>
+        <option value="0">No</option>
+        <option value="1">Yes, for 1 day</option>
+        <option value="7">Yes, for 1 week</option>
+        <option value="14">Yes, for 2 weeks</option>
+        <option value="30">Yes, for 1 month</option>
+      </select>
+    </div>
+    <div>
+      <button formmethod="dialog" formnovalidate>Close</button>
+      <button>Apply</button>
+    </div>
+  </form>
+</dialog>
