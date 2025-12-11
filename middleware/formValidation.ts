@@ -53,9 +53,19 @@ const validateFolderName = [
     .trim()
     .notEmpty()
     .withMessage(
-      "Darling, the folder needs a name, not a ghost. Give her identity, " +
+      "Darling, this folder needs a name, not a ghost. Give her identity, " +
         "or she's not stepping onto the stage."
     ),
 ];
 
-export { validateLogin, validateSignup, validateFolderName };
+const validateFileName = [
+  body("fileName")
+    .trim()
+    .notEmpty()
+    .withMessage(
+      "Darling, this file needs a name, not a ghost. Give her identity, " +
+        "or she's not stepping onto the stage."
+    ),
+];
+
+export { validateLogin, validateSignup, validateFolderName, validateFileName };

@@ -9,6 +9,7 @@ import {
   signupFormPost,
 } from "../controllers/indexController";
 import {
+  validateFileName,
   validateFolderName,
   validateLogin,
   validateSignup,
@@ -29,7 +30,7 @@ indexRouter.post("/:folderId/rename-folder", validateFolderName);
 // indexRouter.post("/:folderId/delete-folder");
 // indexRouter.post("/:folderId/share-folder");
 // indexRouter.post("/:folderId/upload-file");
-// indexRouter.post("/:fileId/rename-file");
+indexRouter.post("/:fileId/rename-file", validateFileName);
 // indexRouter.post("/:fileId/delete-file");
 
 export default indexRouter;
