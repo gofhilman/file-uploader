@@ -103,7 +103,34 @@ async function signupFormPost(req: any, res: any, next: any) {
 }
 
 async function createFolderPost(req: any, res: any) {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: req.params.folderId,
+    },
+    include: {
+      childFolders: true,
+      files: true,
+      shared: true,
+    },
+  });
   const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("main-layout", {
+      folder,
+      page: "index",
+      title: folder?.name,
+      errors: errors.array(),
+    });
+  }
+  const { folderName } = req.body;
+  await prisma.folder.create({
+    data: {
+      name: folderName,
+      parentId: req.params.folderId,
+      userId: req.user.id,
+    },
+  });
+  res.redirect(`/${req.params.folderId}`);
 }
 
 export {
@@ -113,4 +140,5 @@ export {
   signupFormGet,
   loginFormPost,
   signupFormPost,
+  createFolderPost
 };

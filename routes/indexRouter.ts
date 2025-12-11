@@ -1,6 +1,7 @@
 import { Router } from "express";
 import isAuth from "../middleware/auth";
 import {
+  createFolderPost,
   folderGet,
   loginFormGet,
   loginFormPost,
@@ -25,7 +26,11 @@ indexRouter.get("/:folderId", isAuth, folderGet);
 
 indexRouter.post("/login", validateLogin, loginFormPost);
 indexRouter.post("/signup", validateSignup, signupFormPost);
-indexRouter.post("/:folderId/create-folder", validateFolderName);
+indexRouter.post(
+  "/:folderId/create-folder",
+  validateFolderName,
+  createFolderPost
+);
 indexRouter.post("/:folderId/rename-folder", validateFolderName);
 // indexRouter.post("/:folderId/delete-folder");
 // indexRouter.post("/:folderId/share-folder");

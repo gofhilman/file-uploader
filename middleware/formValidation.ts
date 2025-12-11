@@ -55,7 +55,20 @@ const validateFolderName = [
     .withMessage(
       "Darling, this folder needs a name, not a ghost. Give her identity, " +
         "or she's not stepping onto the stage."
-    ),
+    )
+    .custom(async (value) => {
+      const folder = await prisma.folder.findUnique({
+        where: {
+          name: value,
+        },
+      });
+      if (folder) {
+        throw new Error(
+          "That name's already booked and busy, darling. Try something with more sparkle!"
+        );
+      }
+      return true;
+    }),
 ];
 
 const validateFileName = [
@@ -65,7 +78,20 @@ const validateFileName = [
     .withMessage(
       "Darling, this file needs a name, not a ghost. Give her identity, " +
         "or she's not stepping onto the stage."
-    ),
+    )
+    .custom(async (value) => {
+      const file = await prisma.file.findUnique({
+        where: {
+          name: value,
+        },
+      });
+      if (file) {
+        throw new Error(
+          "That name's already booked and busy, darling. Try something with more sparkle!"
+        );
+      }
+      return true;
+    }),
 ];
 
 export { validateLogin, validateSignup, validateFolderName, validateFileName };
