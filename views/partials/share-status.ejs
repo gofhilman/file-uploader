@@ -2,21 +2,21 @@
   <h4>Share status</h4>
   <div>
     <p>Folder name:</p>
-    <p><%= folder.name %></p>
+    <p><%= folder?.name %></p>
     <p>Status:</p>
-    <% if (folder.shared === null) { %>
+    <% if (folder?.shared === null) { %>
     <p>Private</p>
     <% } else { %>
     <p>Shared</p>
     <p>Shareable link:</p>
     <div>
-      <p><%= folder.shared.url %></p>
+      <p><%= folder?.shared.url %></p>
       <button><span>Copy link</span></button>
     </div>
-    <p>Valid until <%= folder.shared.expiredAt %></p>
+    <p>Valid until <%= folder?.shared.expiredAt %></p>
     <% } %>
   </div>
-  <form action="<%= `/${folder.id}/delete-folder` %>" method="post">
+  <form action="<%= `/${folder?.id}/share-folder` %>" method="post">
     <div>
       <label for="share">Share this folder?</label>
       <select name="share" id="share">
