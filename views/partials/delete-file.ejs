@@ -1,0 +1,12 @@
+<dialog class="delete-file">
+  <form action="<%= `/${file?.id}/delete-file` %>" method="post">
+    <h4>Confirm deletion</h4>
+    <p>
+      File <%= file?.name %> is going to be deleted.
+    </p>
+    <div>
+      <button formmethod="dialog" formnovalidate>Cancel</button>
+      <button>Delete</button>
+    </div>
+  </form>
+</dialog>

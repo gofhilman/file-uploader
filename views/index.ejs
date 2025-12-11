@@ -38,6 +38,8 @@
       <% }) %>
       <!-- Show files -->
       <% folder?.files.forEach(file => { %>
+      <%- include("partials/rename-file", {file}) %>
+      <%- include("partials/delete-file", {file}) %>
       <tr>
         <td><%= file.name %></td>
         <td><%= file.uploadedAt %></td>
