@@ -8,7 +8,11 @@ import {
   signupFormGet,
   signupFormPost,
 } from "../controllers/indexController";
-import { validateLogin, validateSignup } from "../middleware/formValidation";
+import {
+  validateFolderName,
+  validateLogin,
+  validateSignup,
+} from "../middleware/formValidation";
 
 const indexRouter = Router();
 
@@ -20,8 +24,8 @@ indexRouter.get("/:folderId", isAuth, folderGet);
 
 indexRouter.post("/login", validateLogin, loginFormPost);
 indexRouter.post("/signup", validateSignup, signupFormPost);
-// indexRouter.post("/:folderId/create-folder");
-// indexRouter.post("/:folderId/rename-folder");
+indexRouter.post("/:folderId/create-folder", validateFolderName);
+indexRouter.post("/:folderId/rename-folder", validateFolderName);
 // indexRouter.post("/:folderId/delete-folder");
 // indexRouter.post("/:folderId/share-folder");
 // indexRouter.post("/:folderId/upload-file");

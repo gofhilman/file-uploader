@@ -1,7 +1,6 @@
 <dialog id="delete-folder">
   <form action="<%= `/${folder?.id}/delete-folder` %>" method="post">
     <h4>Confirm deletion</h4>
-    <%- include("errors.ejs") %>
     <p>
       Folder <%= folder?.name %> and its content are going to be deleted.
     </p>

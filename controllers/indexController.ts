@@ -102,6 +102,10 @@ async function signupFormPost(req: any, res: any, next: any) {
   }
 }
 
+async function createFolderPost(req: any, res: any) {
+  const errors = validationResult(req);
+}
+
 export {
   redirectIndex,
   folderGet,

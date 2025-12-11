@@ -48,4 +48,14 @@ const validateSignup = [
     ),
 ];
 
-export { validateLogin, validateSignup };
+const validateFolderName = [
+  body("folderName")
+    .trim()
+    .notEmpty()
+    .withMessage(
+      "Darling, the folder needs a name, not a ghost. Give her identity, " +
+        "or she's not stepping onto the stage."
+    ),
+];
+
+export { validateLogin, validateSignup, validateFolderName };
