@@ -133,6 +133,57 @@ async function createFolderPost(req: any, res: any) {
   res.redirect(`/${req.params.folderId}`);
 }
 
+async function renameFolderPost(req: any, res: any) {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: req.params.folderId,
+    },
+    include: {
+      childFolders: true,
+      files: true,
+      shared: true,
+    },
+  });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("main-layout", {
+      folder,
+      page: "index",
+      title: folder?.name,
+      errors: errors.array(),
+    });
+  }
+  const { folderName } = req.body;
+  await prisma.folder.update({
+    where: {
+      id: req.params.folderId,
+    },
+    data: {
+      name: folderName,
+    },
+  });
+  res.redirect(`/${req.params.folderId}`);
+}
+
+async function deleteFolderPost(req: any, res: any) {
+  const parentId = (
+    await prisma.folder.findUnique({
+      where: {
+        id: req.params.folderId,
+      },
+      select: {
+        parentId: true,
+      },
+    })
+  )?.parentId;
+  await prisma.folder.delete({
+    where: {
+      id: req.params.folderId,
+    },
+  });
+  res.redirect(`/${parentId}`);
+}
+
 export {
   redirectIndex,
   folderGet,
@@ -140,5 +191,7 @@ export {
   signupFormGet,
   loginFormPost,
   signupFormPost,
-  createFolderPost
+  createFolderPost,
+  renameFolderPost,
+  deleteFolderPost,
 };

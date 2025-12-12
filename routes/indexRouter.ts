@@ -2,10 +2,12 @@ import { Router } from "express";
 import isAuth from "../middleware/auth";
 import {
   createFolderPost,
+  deleteFolderPost,
   folderGet,
   loginFormGet,
   loginFormPost,
   redirectIndex,
+  renameFolderPost,
   signupFormGet,
   signupFormPost,
 } from "../controllers/indexController";
@@ -31,8 +33,12 @@ indexRouter.post(
   validateFolderName,
   createFolderPost
 );
-indexRouter.post("/:folderId/rename-folder", validateFolderName);
-// indexRouter.post("/:folderId/delete-folder");
+indexRouter.post(
+  "/:folderId/rename-folder",
+  validateFolderName,
+  renameFolderPost
+);
+indexRouter.post("/:folderId/delete-folder", deleteFolderPost);
 // indexRouter.post("/:folderId/share-folder");
 // indexRouter.post("/:folderId/upload-file");
 indexRouter.post("/:fileId/rename-file", validateFileName);
