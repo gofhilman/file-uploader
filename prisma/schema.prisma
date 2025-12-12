@@ -24,7 +24,7 @@ model User {
 
 model Folder {
   id           String   @id @default(uuid())
-  name         String   @unique
+  name         String
   parentId     String?
   parent       Folder?  @relation("ParentChildren", fields: [parentId], references: [id], onDelete: Cascade)
   childFolders Folder[] @relation("ParentChildren")
@@ -33,11 +33,13 @@ model Folder {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
   shared       Shared?
+
+  @@unique([name, parentId, userId])
 }
 
 model File {
   id         String   @id @default(uuid())
-  name       String   @unique
+  name       String
   url        String
   size       BigInt
   uploadedAt DateTime @default(now())
@@ -45,6 +47,8 @@ model File {
   userId     String
   folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId   String
+
+  @@unique([name, folderId, userId])
 }
 
 model Shared {

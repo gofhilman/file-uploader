@@ -56,10 +56,14 @@ const validateFolderName = [
       "Darling, this folder needs a name, not a ghost. Give her identity, " +
         "or she's not stepping onto the stage."
     )
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       const folder = await prisma.folder.findUnique({
         where: {
-          name: value,
+          name_parentId_userId: {
+            name: value,
+            parentId: req.params?.folderId,
+            userId: req.user.id,
+          },
         },
       });
       if (folder) {
@@ -79,10 +83,14 @@ const validateFileName = [
       "Darling, this file needs a name, not a ghost. Give her identity, " +
         "or she's not stepping onto the stage."
     )
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       const file = await prisma.file.findUnique({
         where: {
-          name: value,
+          name_folderId_userId: {
+            name: value,
+            folderId: req.params?.folderId,
+            userId: req.user.id,
+          },
         },
       });
       if (file) {

@@ -1,7 +1,7 @@
-<dialog id="<%= locals.errors ? "error-create-folder" : "create-folder" %>">
+<dialog id="<%= locals.createFolderErrors ? "error-create-folder" : "create-folder" %>">
   <form action="<%= `/${folder?.id}/create-folder` %>" method="post">
     <h4>Create a folder</h4>
-    <%- include("errors.ejs") %>
+    <%- include("errors.ejs", {errors: locals.createFolderErrors}) %>
     <div>
       <label for="folderName">Enter the folder name:</label>
       <input type="text" name="folderName" id="folderName" required>

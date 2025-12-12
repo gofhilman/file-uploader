@@ -119,7 +119,7 @@ async function createFolderPost(req: any, res: any) {
       folder,
       page: "index",
       title: folder?.name,
-      errors: errors.array(),
+      createFolderErrors: errors.array(),
     });
   }
   const { folderName } = req.body;
@@ -150,7 +150,7 @@ async function renameFolderPost(req: any, res: any) {
       folder,
       page: "index",
       title: folder?.name,
-      errors: errors.array(),
+      renameFolderErrors: errors.array(),
     });
   }
   const { folderName } = req.body;
