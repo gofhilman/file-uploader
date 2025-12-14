@@ -102,4 +102,37 @@ const validateFileName = [
     }),
 ];
 
-export { validateLogin, validateSignup, validateFolderName, validateFileName };
+const validateFile = [
+  body("file").custom(async (value, { req }) => {
+    if (!req.file) {
+      throw new Error("Honey, don't play shy, upload that file!");
+    }
+    // Max file size: 100 MB
+    if (req.file.size > 100 * 1024 * 1024) {
+      throw new Error("File too thicc, darling. Slim it down to 100 MB max!");
+    }
+    const file = await prisma.file.findUnique({
+      where: {
+        name_folderId_userId: {
+          name: req.file.filename,
+          folderId: req.params?.folderId,
+          userId: req.user.id,
+        },
+      },
+    });
+    if (file) {
+      throw new Error(
+        "That name's already booked and busy, darling. Try something with more sparkle!"
+      );
+    }
+    return true;
+  }),
+];
+
+export {
+  validateLogin,
+  validateSignup,
+  validateFolderName,
+  validateFileName,
+  validateFile,
+};

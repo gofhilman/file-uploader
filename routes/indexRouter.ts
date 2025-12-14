@@ -10,8 +10,10 @@ import {
   renameFolderPost,
   signupFormGet,
   signupFormPost,
+  uploadFile,
 } from "../controllers/indexController";
 import {
+  validateFile,
   validateFileName,
   validateFolderName,
   validateLogin,
@@ -40,7 +42,7 @@ indexRouter.post(
 );
 indexRouter.post("/:folderId/delete-folder", deleteFolderPost);
 // indexRouter.post("/:folderId/share-folder");
-// indexRouter.post("/:folderId/upload-file");
+indexRouter.post("/:folderId/upload-file", uploadFile, validateFile);
 indexRouter.post("/:fileId/rename-file", validateFileName);
 // indexRouter.post("/:fileId/delete-file");
 

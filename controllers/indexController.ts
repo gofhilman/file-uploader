@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { prisma } from "../lib/prisma";
 import passport from "passport";
 import bcrypt from "bcryptjs";
+import multer from "multer";
 
 async function redirectIndex(req: any, res: any) {
   const root = await prisma.folder.findFirst({
@@ -184,6 +185,63 @@ async function deleteFolderPost(req: any, res: any) {
   res.redirect(`/${parentId}`);
 }
 
+const storage = multer.diskStorage({
+  destination: "tmp/uploads",
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // Max file size: 100 MB
+}).single("file");
+
+function uploadFile(req: any, res: any, next: any) {
+  upload(req, res, async (err) => {
+    if (err) {
+      const errors = [{ msg: err.message }];
+      const folder = await prisma.folder.findUnique({
+        where: { id: req.params.folderId },
+        include: { childFolders: true, files: true, shared: true },
+      });
+      return res.status(400).render("main-layout", {
+        folder,
+        page: "index",
+        title: folder?.name,
+        uploadFileErrors: errors,
+      });
+    }
+    res.redirect(`/${req.params.folderId}`);
+  });
+  // next();
+}
+
+async function recordFilePost(req: any, res: any) {
+  // const folder = await prisma.folder.findUnique({
+  //   where: {
+  //     id: req.params.folderId,
+  //   },
+  //   include: {
+  //     childFolders: true,
+  //     files: true,
+  //     shared: true,
+  //   },
+  // });
+  // const validationErrors = validationResult(req);
+  // if (!validationErrors.isEmpty()) {
+  //   errors.push(...validationErrors.array());
+  // }
+  // if (errors.length > 0) {
+  //   return res.status(400).render("main-layout", {
+  //     folder,
+  //     page: "index",
+  //     title: folder?.name,
+  //     uploadFileErrors: errors,
+  //   });
+  // }
+  // res.redirect(`/${req.params.folderId}`);
+}
+
 export {
   redirectIndex,
   folderGet,
@@ -194,4 +252,6 @@ export {
   createFolderPost,
   renameFolderPost,
   deleteFolderPost,
+  uploadFile,
+  recordFilePost
 };

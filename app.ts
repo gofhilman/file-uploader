@@ -45,7 +45,7 @@ app.use(passport.session());
 
 app.use(indexRouter);
 
-app.use((err: any, _: any, res: any, __: any) => {
+app.use((err: any, req: any, res: any, next: any) => {
   console.error(err);
   res.status(err.statusCode || 500).send(err.message);
 });
