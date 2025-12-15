@@ -84,11 +84,19 @@ const validateFileName = [
         "or she's not stepping onto the stage."
     )
     .custom(async (value, { req }) => {
+      const { folderId } = (await prisma.file.findUnique({
+        where: {
+          id: req.params?.fileId,
+        },
+        select: {
+          folderId: true,
+        },
+      }))!;
       const file = await prisma.file.findUnique({
         where: {
           name_folderId_userId: {
             name: value,
-            folderId: req.params?.folderId,
+            folderId: folderId,
             userId: req.user.id,
           },
         },

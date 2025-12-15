@@ -1,7 +1,7 @@
-<dialog class="<%= locals.errors ? `error-rename-file` : `rename-file` %>">
+<dialog class="<%= locals.renameFileErrors ? `error-rename-file` : `rename-file` %>">
   <form action="<%= `/${file?.id}/rename-file` %>" method="post">
-    <h4>Rename file</h4>
-    <%- include("errors.ejs") %>
+    <h4>Rename file <%= file?.name %></h4>
+    <%- include("errors.ejs", {errors: locals.renameFileErrors}) %>
     <div>
       <label for="fileName">Enter a new file name:</label>
       <input type="text" name="fileName" id="fileName" required>

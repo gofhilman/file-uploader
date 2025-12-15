@@ -1,6 +1,6 @@
 <dialog id="<%= locals.renameFolderErrors ? "error-rename-folder" : "rename-folder" %>">
   <form action="<%= `/${folder?.id}/rename-folder` %>" method="post">
-    <h4>Rename folder</h4>
+    <h4>Rename folder <%= folder?.name %></h4>
     <%- include("errors.ejs", {errors: locals.renameFolderErrors}) %>
     <div>
       <label for="folderName">Enter a new folder name:</label>

@@ -44,9 +44,11 @@
         <td><%= file.uploadedAt %></td>
         <td><%= file.size %></td>
         <td>
-          <button onclick="window.location='/<%= file.id %>/download'">Download</button>
-          <button>Rename</button>
-          <button>Delete</button>
+          <button onclick="window.location='/<%= file.id %>/download'">
+            Download
+          </button>
+          <button class="rename-file-button">Rename</button>
+          <button class="delete-file-button">Delete</button>
         </td>
       </tr>
       <% }) %>

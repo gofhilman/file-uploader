@@ -297,6 +297,71 @@ async function downloadFileGet(req: any, res: any) {
   await response.body?.pipeTo(webWritable);
 }
 
+async function renameFilePost(req: any, res: any) {
+  const { name, folder } = (await prisma.file.findUnique({
+    where: {
+      id: req.params.fileId,
+    },
+    select: {
+      name: true,
+      folder: {
+        include: {
+          childFolders: true,
+          files: true,
+          shared: true,
+        },
+      },
+    },
+  }))!;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("main-layout", {
+      folder,
+      page: "index",
+      title: folder?.name,
+      renameFileErrors: errors.array(),
+    });
+  }
+  const { fileName } = req.body;
+  await supabase.storage
+    .from("file-uploader")
+    .move(`${folder.id}/${name}`, `${folder.id}/${fileName}`);
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from("file-uploader")
+    .getPublicUrl(`${folder.id}/${fileName}`);
+  await prisma.file.update({
+    where: {
+      id: req.params.fileId,
+    },
+    data: {
+      name: fileName,
+      url: publicUrl,
+    },
+  });
+  res.redirect(`/${folder.id}`);
+}
+
+async function deleteFilePost(req: any, res: any) {
+  const { name, folderId } = (await prisma.file.findUnique({
+    where: {
+      id: req.params.fileId,
+    },
+    select: {
+      name: true,
+      folderId: true,
+    },
+  }))!;
+  await supabase.storage.from("file-uploader").remove([`${folderId}/${name}`]);
+  await prisma.file.delete({
+    where: {
+      id: req.params.fileId,
+    },
+  });
+  res.redirect(`/${folderId}`);
+}
+
 export {
   redirectIndex,
   folderGet,
@@ -310,4 +375,6 @@ export {
   uploadFile,
   recordFilePost,
   downloadFileGet,
+  renameFilePost,
+  deleteFilePost,
 };

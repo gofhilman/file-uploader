@@ -2,6 +2,7 @@ import { Router } from "express";
 import isAuth from "../middleware/auth";
 import {
   createFolderPost,
+  deleteFilePost,
   deleteFolderPost,
   downloadFileGet,
   folderGet,
@@ -9,6 +10,7 @@ import {
   loginFormPost,
   recordFilePost,
   redirectIndex,
+  renameFilePost,
   renameFolderPost,
   signupFormGet,
   signupFormPost,
@@ -50,7 +52,7 @@ indexRouter.post(
   validateFile,
   recordFilePost
 );
-indexRouter.post("/:fileId/rename-file", validateFileName);
-// indexRouter.post("/:fileId/delete-file");
+indexRouter.post("/:fileId/rename-file", validateFileName, renameFilePost);
+indexRouter.post("/:fileId/delete-file", deleteFilePost);
 
 export default indexRouter;
