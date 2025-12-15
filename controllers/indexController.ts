@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import multer from "multer";
+import { createClient } from "@supabase/supabase-js";
 
 async function redirectIndex(req: any, res: any) {
   const root = await prisma.folder.findFirst({
@@ -184,16 +185,18 @@ async function deleteFolderPost(req: any, res: any) {
   });
   res.redirect(`/${parentId}`);
 }
-
-const storage = multer.diskStorage({
-  destination: "tmp/uploads",
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+// Save to disk
+// const storage = multer.diskStorage({
+//   destination: "tmp/uploads",
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+// Save to memory as a buffer
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // Max file size: 100 MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // Max file size: 50 MB
 }).single("file");
 
 function uploadFile(req: any, res: any, next: any) {
@@ -201,8 +204,14 @@ function uploadFile(req: any, res: any, next: any) {
     if (err) {
       const errors = [{ msg: err.message }];
       const folder = await prisma.folder.findUnique({
-        where: { id: req.params.folderId },
-        include: { childFolders: true, files: true, shared: true },
+        where: {
+          id: req.params.folderId,
+        },
+        include: {
+          childFolders: true,
+          files: true,
+          shared: true,
+        },
       });
       return res.status(400).render("main-layout", {
         folder,
@@ -211,35 +220,57 @@ function uploadFile(req: any, res: any, next: any) {
         uploadFileErrors: errors,
       });
     }
-    res.redirect(`/${req.params.folderId}`);
+    next();
   });
-  // next();
 }
 
+const supabase = createClient(
+  "https://bdgsonubwvppjcjqkuqf.supabase.co",
+  process.env.SUPABASE_KEY ??
+    (() => {
+      throw new Error("SUPABASE_KEY missing");
+    })()
+);
+
 async function recordFilePost(req: any, res: any) {
-  // const folder = await prisma.folder.findUnique({
-  //   where: {
-  //     id: req.params.folderId,
-  //   },
-  //   include: {
-  //     childFolders: true,
-  //     files: true,
-  //     shared: true,
-  //   },
-  // });
-  // const validationErrors = validationResult(req);
-  // if (!validationErrors.isEmpty()) {
-  //   errors.push(...validationErrors.array());
-  // }
-  // if (errors.length > 0) {
-  //   return res.status(400).render("main-layout", {
-  //     folder,
-  //     page: "index",
-  //     title: folder?.name,
-  //     uploadFileErrors: errors,
-  //   });
-  // }
-  // res.redirect(`/${req.params.folderId}`);
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: req.params.folderId,
+    },
+    include: {
+      childFolders: true,
+      files: true,
+      shared: true,
+    },
+  });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("main-layout", {
+      folder,
+      page: "index",
+      title: folder?.name,
+      uploadFileErrors: errors.array(),
+    });
+  }
+  const supabaseFilePath = req.params.folderId + "/" + req.file.originalname;
+  await supabase.storage
+    .from("file-uploader")
+    .upload(supabaseFilePath, req.file.buffer, {
+      contentType: req.file.mimetype,
+    });
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("file-uploader").getPublicUrl(supabaseFilePath);
+  await prisma.file.create({
+    data: {
+      name: req.file.originalname,
+      url: publicUrl,
+      size: req.file.size,
+      userId: req.user.id,
+      folderId: req.params.folderId,
+    },
+  });
+  res.redirect(`/${req.params.folderId}`);
 }
 
 export {
@@ -253,5 +284,5 @@ export {
   renameFolderPost,
   deleteFolderPost,
   uploadFile,
-  recordFilePost
+  recordFilePost,
 };

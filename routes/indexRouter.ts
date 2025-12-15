@@ -6,6 +6,7 @@ import {
   folderGet,
   loginFormGet,
   loginFormPost,
+  recordFilePost,
   redirectIndex,
   renameFolderPost,
   signupFormGet,
@@ -42,7 +43,12 @@ indexRouter.post(
 );
 indexRouter.post("/:folderId/delete-folder", deleteFolderPost);
 // indexRouter.post("/:folderId/share-folder");
-indexRouter.post("/:folderId/upload-file", uploadFile, validateFile);
+indexRouter.post(
+  "/:folderId/upload-file",
+  uploadFile,
+  validateFile,
+  recordFilePost
+);
 indexRouter.post("/:fileId/rename-file", validateFileName);
 // indexRouter.post("/:fileId/delete-file");
 

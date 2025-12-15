@@ -107,14 +107,14 @@ const validateFile = [
     if (!req.file) {
       throw new Error("Honey, don't play shy, upload that file!");
     }
-    // Max file size: 100 MB
-    if (req.file.size > 100 * 1024 * 1024) {
-      throw new Error("File too thicc, darling. Slim it down to 100 MB max!");
+    // Max file size: 50 MB
+    if (req.file.size > 50 * 1024 * 1024) {
+      throw new Error("File too thicc, darling. Slim it down to 50 MB max!");
     }
     const file = await prisma.file.findUnique({
       where: {
         name_folderId_userId: {
-          name: req.file.filename,
+          name: req.file.originalname,
           folderId: req.params?.folderId,
           userId: req.user.id,
         },
