@@ -3,6 +3,7 @@ import isAuth from "../middleware/auth";
 import {
   createFolderPost,
   deleteFolderPost,
+  downloadFileGet,
   folderGet,
   loginFormGet,
   loginFormPost,
@@ -26,7 +27,7 @@ const indexRouter = Router();
 indexRouter.get("/", isAuth, redirectIndex);
 indexRouter.get("/login", loginFormGet);
 indexRouter.get("/signup", signupFormGet);
-indexRouter.get("/:fileId/download", isAuth);
+indexRouter.get("/:fileId/download", isAuth, downloadFileGet);
 indexRouter.get("/:folderId", isAuth, folderGet);
 
 indexRouter.post("/login", validateLogin, loginFormPost);

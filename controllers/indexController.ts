@@ -4,6 +4,7 @@ import passport from "passport";
 import bcrypt from "bcryptjs";
 import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
+import { Writable } from "node:stream";
 
 async function redirectIndex(req: any, res: any) {
   const root = await prisma.folder.findFirst({
@@ -185,6 +186,7 @@ async function deleteFolderPost(req: any, res: any) {
   });
   res.redirect(`/${parentId}`);
 }
+
 // Save to disk
 // const storage = multer.diskStorage({
 //   destination: "tmp/uploads",
@@ -192,6 +194,7 @@ async function deleteFolderPost(req: any, res: any) {
 //     cb(null, file.originalname);
 //   },
 // });
+
 // Save to memory as a buffer
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -273,6 +276,27 @@ async function recordFilePost(req: any, res: any) {
   res.redirect(`/${req.params.folderId}`);
 }
 
+async function downloadFileGet(req: any, res: any) {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: req.params.fileId,
+    },
+    select: {
+      name: true,
+      url: true,
+    },
+  });
+  const response = await fetch(
+    file?.url ??
+      (() => {
+        throw new Error("URL is undefined");
+      })()
+  );
+  res.attachment(file.name);
+  const webWritable = Writable.toWeb(res);
+  await response.body?.pipeTo(webWritable);
+}
+
 export {
   redirectIndex,
   folderGet,
@@ -285,4 +309,5 @@ export {
   deleteFolderPost,
   uploadFile,
   recordFilePost,
+  downloadFileGet,
 };

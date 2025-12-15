@@ -4,7 +4,7 @@
   include("partials/upload-file") %> <%- include("partials/share-status") %>
   <div>
     <div>
-      <button onclick="window.location='/' + '<%= folder?.parentId %>'">Up</button>
+      <button onclick="window.location='/<%= folder?.parentId %>'">Up</button>
       <h2>
         <%= folder?.name %><span><%= folder?.shared ? "(Shared)" : "" %></span>
       </h2>
@@ -29,7 +29,7 @@
     <tbody>
       <!-- Show child folders -->
       <% folder?.childFolders.forEach(child => { %>
-      <tr onclick="window.location='/' + '<%= child.id %>'">
+      <tr onclick="window.location='/<%= child.id %>'">
         <td><%= child.name %></td>
         <td><%= child.createdAt %></td>
         <td></td>
@@ -44,7 +44,7 @@
         <td><%= file.uploadedAt %></td>
         <td><%= file.size %></td>
         <td>
-          <button>Download</button>
+          <button onclick="window.location='/<%= file.id %>/download'">Download</button>
           <button>Rename</button>
           <button>Delete</button>
         </td>
