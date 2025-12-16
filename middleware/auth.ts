@@ -13,11 +13,7 @@ export async function isAuthFolder(req: any, res: any, next: any) {
   if (isShared) {
     return next();
   }
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(401).redirect("/login");
-  }
+  isAuthExtra(req, res, next);
 }
 
 export async function isAuthFile(req: any, res: any, next: any) {
@@ -38,6 +34,10 @@ export async function isAuthFile(req: any, res: any, next: any) {
   if (isShared) {
     return next();
   }
+  isAuthExtra(req, res, next);
+}
+
+export function isAuthExtra(req: any, res: any, next: any) {
   if (req.isAuthenticated()) {
     next();
   } else {
