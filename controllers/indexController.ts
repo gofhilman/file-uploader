@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
 import { Writable } from "node:stream";
+import { addDays } from "date-fns";
 
 async function redirectIndex(req: any, res: any) {
   const root = await prisma.folder.findFirst({
@@ -30,7 +31,9 @@ async function folderGet(req: any, res: any) {
       shared: true,
     },
   });
+  const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
   res.render("main-layout", {
+    url,
     folder,
     page: "index",
     title: folder?.name,
@@ -116,9 +119,11 @@ async function createFolderPost(req: any, res: any) {
       shared: true,
     },
   });
+  const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("main-layout", {
+      url,
       folder,
       page: "index",
       title: folder?.name,
@@ -147,9 +152,11 @@ async function renameFolderPost(req: any, res: any) {
       shared: true,
     },
   });
+  const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("main-layout", {
+      url,
       folder,
       page: "index",
       title: folder?.name,
@@ -216,7 +223,9 @@ function uploadFile(req: any, res: any, next: any) {
           shared: true,
         },
       });
+      const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
       return res.status(400).render("main-layout", {
+        url,
         folder,
         page: "index",
         title: folder?.name,
@@ -246,9 +255,11 @@ async function recordFilePost(req: any, res: any) {
       shared: true,
     },
   });
+  const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("main-layout", {
+      url,
       folder,
       page: "index",
       title: folder?.name,
@@ -313,9 +324,11 @@ async function renameFilePost(req: any, res: any) {
       },
     },
   }))!;
+  const url = `${req.protocol}://${req.host}/${folder.id}`;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("main-layout", {
+      url,
       folder,
       page: "index",
       title: folder?.name,
@@ -362,6 +375,49 @@ async function deleteFilePost(req: any, res: any) {
   res.redirect(`/${folderId}`);
 }
 
+async function shareFolderPost(req: any, res: any) {
+  let { share } = req.body;
+  if (!share) {
+    return res.redirect(`/${req.params.folderId}`);
+  }
+  share = +share;
+  const startDate = new Date();
+  const endDate = addDays(startDate, share);
+  await prisma.shared.upsert({
+    where: {
+      folderId: req.params.folderId,
+    },
+    update: {
+      createdAt: startDate,
+      expiresAt: endDate,
+    },
+    create: {
+      folderId: req.params.folderId,
+      createdAt: startDate,
+      expiresAt: endDate,
+      userId: req.user.id,
+    },
+  });
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: req.params.folderId,
+    },
+    include: {
+      childFolders: true,
+      files: true,
+      shared: true,
+    },
+  });
+  const url = `${req.protocol}://${req.host}/${req.params.folderId}`;
+  res.render("main-layout", {
+    url,
+    folder,
+    page: "index",
+    title: folder?.name,
+    copy: true,
+  });
+}
+
 export {
   redirectIndex,
   folderGet,
@@ -377,4 +433,5 @@ export {
   downloadFileGet,
   renameFilePost,
   deleteFilePost,
+  shareFolderPost,
 };

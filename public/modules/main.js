@@ -16,6 +16,7 @@ const shareStatus = document.querySelector("#share-status");
 const uploadFile = document.querySelector("#upload-file");
 const renameFile = Array.from(document.querySelectorAll(".rename-file"));
 const deleteFile = Array.from(document.querySelectorAll(".delete-file"));
+const copyShareStatus = document.querySelector("#copy-share-status");
 const errorRenameFolder = document.querySelector("#error-rename-folder");
 const errorCreateFolder = document.querySelector("#error-create-folder");
 const errorUploadFile = document.querySelector("#error-upload-file");
@@ -27,7 +28,7 @@ const dialogs = [
   [renameFolderButton, renameFolder, errorRenameFolder],
   [deleteFolderButton, deleteFolder],
   [createFolderButton, createFolder, errorCreateFolder],
-  [shareStatusButton, shareStatus],
+  [shareStatusButton, shareStatus, copyShareStatus],
   [uploadFileButton, uploadFile, errorUploadFile],
 ];
 

@@ -6,7 +6,9 @@
     <div>
       <button onclick="window.location='/<%= folder?.parentId %>'">Up</button>
       <h2>
-        <%= folder?.name %><span><%= folder?.shared ? "(Shared)" : "" %></span>
+        <%= folder?.name %><span
+          ><%= !!folder?.shared && folder.shared.expiresAt > new Date() ? "(Shared)" : "" %></span
+        >
       </h2>
       <button id="rename-folder-button">Rename</button>
       <button id="delete-folder-button">Delete</button>

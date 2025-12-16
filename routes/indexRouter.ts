@@ -1,5 +1,4 @@
 import { Router } from "express";
-import isAuth from "../middleware/auth";
 import {
   createFolderPost,
   deleteFilePost,
@@ -12,6 +11,7 @@ import {
   redirectIndex,
   renameFilePost,
   renameFolderPost,
+  shareFolderPost,
   signupFormGet,
   signupFormPost,
   uploadFile,
@@ -23,14 +23,15 @@ import {
   validateLogin,
   validateSignup,
 } from "../middleware/formValidation";
+import { isAuthFile, isAuthFolder } from "../middleware/auth";
 
 const indexRouter = Router();
 
-indexRouter.get("/", isAuth, redirectIndex);
+indexRouter.get("/", redirectIndex);
 indexRouter.get("/login", loginFormGet);
 indexRouter.get("/signup", signupFormGet);
-indexRouter.get("/:fileId/download", isAuth, downloadFileGet);
-indexRouter.get("/:folderId", isAuth, folderGet);
+indexRouter.get("/:fileId/download", isAuthFile, downloadFileGet);
+indexRouter.get("/:folderId", isAuthFolder, folderGet);
 
 indexRouter.post("/login", validateLogin, loginFormPost);
 indexRouter.post("/signup", validateSignup, signupFormPost);
@@ -45,7 +46,7 @@ indexRouter.post(
   renameFolderPost
 );
 indexRouter.post("/:folderId/delete-folder", deleteFolderPost);
-// indexRouter.post("/:folderId/share-folder");
+indexRouter.post("/:folderId/share-folder", shareFolderPost);
 indexRouter.post(
   "/:folderId/upload-file",
   uploadFile,

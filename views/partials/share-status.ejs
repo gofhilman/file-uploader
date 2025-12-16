@@ -1,19 +1,19 @@
-<dialog id="share-status">
+<dialog id="<%= locals.copy ? "copy-share-status" : "share-status" %>">
   <h4>Share status</h4>
   <div>
     <p>Folder name:</p>
     <p><%= folder?.name %></p>
     <p>Status:</p>
-    <% if (folder?.shared === null) { %>
+    <% if (!folder?.shared || folder.shared.expiresAt < new Date()) { %>
     <p>Private</p>
     <% } else { %>
     <p>Shared</p>
     <p>Shareable link:</p>
     <div>
-      <p><%= folder?.shared.url %></p>
+      <p><%= url %></p>
       <button><span>Copy link</span></button>
     </div>
-    <p>Valid until <%= folder?.shared.expiredAt %></p>
+    <p>Valid until <%= folder?.shared.expiresAt %></p>
     <% } %>
   </div>
   <form action="<%= `/${folder?.id}/share-folder` %>" method="post">
