@@ -5,8 +5,8 @@
   <div>
     <div>
       <button onclick="window.location='/<%= folder?.parentId %>'">Up</button>
-      <h2>
-        <%= folder?.name %><span
+      <h2 class="page-title">
+        <%= folder?.name %><span class="green"
           ><%= !!folder?.shared && folder.shared.expiresAt > new Date() ? " (Shared)" : "" %></span
         >
       </h2>
@@ -31,7 +31,7 @@
     <tbody>
       <!-- Show child folders -->
       <% folder?.childFolders.forEach(child => { %>
-      <tr onclick="window.location='/<%= child.id %>'">
+      <tr onclick="window.location='/<%= child.id %>'" class="folder">
         <td><%= child.name %></td>
         <td><%= child.createdAt %></td>
         <td></td>

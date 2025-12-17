@@ -46,15 +46,13 @@ body {
 }
 
 header {
-  padding: 10px 250px;
+  padding: 10px 150px;
   background-color: rgb(19, 19, 19);
   color: white;
   display: flex;
 }
 
 .logo {
-  text-decoration: none;
-  color: inherit;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -68,7 +66,7 @@ header {
 }
 
 main {
-  padding: 40px 250px;
+  padding: 40px 150px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -80,4 +78,94 @@ footer {
   background-color: rgb(19, 19, 19);
   color: white;
   padding-block: 3px;
+}
+
+label {
+  display: block;
+  font-size: 1.2rem;
+}
+
+input {
+  min-width: 300px;
+  padding: 4px 8px;
+  margin-block: 10px;
+}
+
+button {
+  cursor: pointer;
+  padding: 6px 25px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+form > div {
+  padding-block: 10px;
+}
+
+form > button {
+  margin-block: 10px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  padding-block: 5px;
+}
+
+.green {
+  color: rgb(18, 119, 18);
+}
+
+th, td {
+  padding: 5px 10px;
+  font-size: 1.1rem;
+}
+
+.folder {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error-msg {
+  color: red;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.error-details {
+  color: red;
+}
+
+.form-body {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 15px 30px;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  header {
+    padding-inline: 20px;
+  }
+
+  main {
+    padding-inline: 20px;
+  }
+  
+  input {
+    min-width: 100%;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .logo > img {
+    width: 30px;
+  }
+
+  .form-body {
+    grid-template-columns: auto;
+    gap: 7px;
+  }
 }
