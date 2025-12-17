@@ -186,12 +186,15 @@ async function deleteFolderPost(req: any, res: any) {
       },
     })
   )?.parentId;
-  await prisma.folder.delete({
-    where: {
-      id: req.params.folderId,
-    },
-  });
-  res.redirect(`/${parentId}`);
+  if (parentId) {
+    await prisma.folder.delete({
+      where: {
+        id: req.params.folderId,
+      },
+    });
+    return res.redirect(`/${parentId}`);
+  }
+  res.redirect(`/${req.params.folderId}`);
 }
 
 // Save to disk

@@ -85,10 +85,11 @@ label {
   font-size: 1.2rem;
 }
 
-input {
+input, select {
   min-width: 300px;
   padding: 4px 8px;
   margin-block: 10px;
+  line-height: 1.5;
 }
 
 button {
@@ -96,6 +97,8 @@ button {
   padding: 6px 25px;
   font-size: 1.2rem;
   font-weight: 500;
+  border-width: 1px;
+  border-radius: 12px;
 }
 
 form > div {
@@ -112,18 +115,58 @@ form > button {
   padding-block: 5px;
 }
 
-.green {
-  color: rgb(18, 119, 18);
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-th, td {
-  padding: 5px 10px;
+h4 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.green {
+  color: #127712;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
   font-size: 1.1rem;
+  text-align: left;
+}
+
+.name {
+  width: 40%;
+}
+
+.created {
+  width: 20%;
+}
+
+.size {
+  width: 15%;
+}
+
+.action {
+  width: 25%;
+}
+
+th,
+td {
+  padding: 5px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .folder {
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
+}
+
+.small {
+  width: 20px;
 }
 
 .error-msg {
@@ -143,6 +186,90 @@ th, td {
   align-items: center;
 }
 
+.folder-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.top-area {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bottom-area {
+  display: flex;
+  gap: 20px;
+}
+
+.folder-name {
+  padding-left: 50px;
+  padding-right: 150px;
+}
+
+.rename {
+  background-color: #3583f7;
+}
+
+.delete {
+  background-color: #f53333;
+}
+
+.download {
+  background-color: #127712;
+}
+
+.disable {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.2;
+}
+
+dialog {
+  border-radius: 12px;
+  border: 2px solid #cbd5e1;
+  font-size: 1.2rem;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 8px;
+}
+
+.dialog-buttons button, #copy-link {
+  padding: 5px 15px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border-width: 1px;
+}
+
+.special-margin {
+  margin-top: 25px;
+}
+
+.title-margin {
+  margin-bottom: 10px;
+}
+
+.grid-data {
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: 30px;
+}
+
+.grid-data > p:last-child {
+  grid-column: 2 / 3;
+}
+
 @media (max-width: 600px) {
   header {
     padding-inline: 20px;
@@ -151,7 +278,7 @@ th, td {
   main {
     padding-inline: 20px;
   }
-  
+
   input {
     min-width: 100%;
   }

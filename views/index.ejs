@@ -2,18 +2,18 @@
   <%- include("partials/rename-folder") %> <%- include("partials/delete-folder")
   %> <%- include("partials/create-folder") %> <%-
   include("partials/upload-file") %> <%- include("partials/share-status") %>
-  <div>
-    <div>
-      <button onclick="window.location='/<%= folder?.parentId %>'">Up</button>
-      <h2 class="page-title">
+  <div class="folder-area">
+    <div class="top-area">
+      <button onclick="window.location='/<%= folder?.parentId %>'" class="<%= folder?.parentId ? "" : "disable" %>"><img src="/images/move-up.svg" alt="Up"></button>
+      <h2 class="page-title folder-name">
         <%= folder?.name %><span class="green"
           ><%= !!folder?.shared && folder.shared.expiresAt > new Date() ? " (Shared)" : "" %></span
         >
       </h2>
-      <button id="rename-folder-button">Rename</button>
-      <button id="delete-folder-button">Delete</button>
+      <button id="rename-folder-button" class="rename"><img src="/images/square-pen.svg" alt="Rename"></button>
+      <button id="delete-folder-button" class="delete <%= folder?.parentId ? "" : "disable" %>"><img src="/images/trash-2.svg" alt="Delete"></button>
     </div>
-    <div>
+    <div class="bottom-area">
       <button id="create-folder-button">New folder</button>
       <button id="upload-file-button">Upload a file</button>
       <button id="share-status-button">Share status</button>
@@ -22,35 +22,35 @@
   <table>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Created at</th>
-        <th>Size</th>
-        <th>Action</th>
+        <th class="name">Name</th>
+        <th class="created">Created at</th>
+        <th class="size">Size</th>
+        <th class="action">Action</th>
       </tr>
     </thead>
     <tbody>
       <!-- Show child folders -->
       <% folder?.childFolders.forEach(child => { %>
       <tr onclick="window.location='/<%= child.id %>'" class="folder">
-        <td><%= child.name %></td>
-        <td><%= child.createdAt %></td>
-        <td></td>
-        <td></td>
+        <td class="name"><%= child.name %></td>
+        <td class="created"><%= child.createdAt %></td>
+        <td class="size"></td>
+        <td class="action"></td>
       </tr>
       <% }) %>
       <!-- Show files -->
       <% folder?.files.forEach(file => { %> <%- include("partials/rename-file",
       {file}) %> <%- include("partials/delete-file", {file}) %>
       <tr>
-        <td><%= file.name %></td>
-        <td><%= file.uploadedAt %></td>
-        <td><%= file.size %></td>
-        <td>
-          <button onclick="window.location='/<%= file.id %>/download'">
-            Download
+        <td class="name"><%= file.name %></td>
+        <td class="created"><%= file.uploadedAt %></td>
+        <td class="size"><%= Number(file.size) / (1024 * 1024) > 1 ? (Number(file.size) / (1024 * 1024)).toFixed(3) + " MB" : (Number(file.size) / 1024).toFixed(3) + " KB" %></td>
+        <td class="action">
+          <button onclick="window.location='/<%= file.id %>/download'" class="download">
+            <img src="/images/download.svg" alt="Download" class="small">
           </button>
-          <button class="rename-file-button">Rename</button>
-          <button class="delete-file-button">Delete</button>
+          <button class="rename-file-button rename"><img src="/images/square-pen.svg" alt="Rename" class="small"></button>
+          <button class="delete-file-button delete"><img src="/images/trash-2.svg" alt="Delete" class="small"></button>
         </td>
       </tr>
       <% }) %>

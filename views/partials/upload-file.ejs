@@ -1,9 +1,9 @@
 <dialog id="<%= locals.uploadFileErrors ? "error-upload-file" : "upload-file" %>">
   <form action="<%= `/${folder?.id}/upload-file` %>" method="post" enctype="multipart/form-data">
-    <h4>Upload a file</h4>
+    <h3>Upload a file</h3>
     <%- include("errors.ejs", {errors: locals.uploadFileErrors}) %>
     <input type="file" name="file" id="file" required>
-    <div>
+    <div class="dialog-buttons">
       <button formmethod="dialog" formnovalidate>Cancel</button>
       <button>Upload</button>
     </div>

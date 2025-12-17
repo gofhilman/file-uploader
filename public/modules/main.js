@@ -24,6 +24,10 @@ const errorRenameFile = Array.from(
   document.querySelectorAll(".error-rename-file")
 );
 
+const copyLink = document.querySelector("#copy-link");
+const copyStatus = document.querySelector("#copy-status");
+const link = document.querySelector("#link");
+
 const dialogs = [
   [renameFolderButton, renameFolder, errorRenameFolder],
   [deleteFolderButton, deleteFolder],
@@ -46,3 +50,14 @@ dialogs.forEach((dialog) => {
     dialog[2].showModal();
   }
 });
+
+if (copyLink) {
+  copyLink.addEventListener("click", () => {
+    navigator.clipboard.writeText(link.textContent).then(() => {
+      copyStatus.textContent = "Link copied!";
+      setTimeout(() => {
+        copyStatus.textContent = "Copy link";
+      }, 2000);
+    });
+  });
+}

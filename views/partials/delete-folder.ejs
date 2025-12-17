@@ -1,10 +1,8 @@
 <dialog id="delete-folder">
   <form action="<%= `/${folder?.id}/delete-folder` %>" method="post">
-    <h4>Confirm deletion</h4>
-    <p>
-      Folder <%= folder?.name %> and its content are going to be deleted.
-    </p>
-    <div>
+    <h3>Confirm deletion</h3>
+    <p>Folder <%= folder?.name %> and its content are going to be deleted.</p>
+    <div class="dialog-buttons">
       <button formmethod="dialog" formnovalidate>Cancel</button>
       <button>Delete</button>
     </div>

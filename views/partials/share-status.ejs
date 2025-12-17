@@ -1,6 +1,6 @@
 <dialog id="<%= locals.copy ? "copy-share-status" : "share-status" %>">
-  <h4>Share status</h4>
-  <div>
+  <h3 class="title-margin">Share status</h3>
+  <div class="grid-data">
     <p>Folder name:</p>
     <p><%= folder?.name %></p>
     <p>Status:</p>
@@ -10,14 +10,14 @@
     <p>Shared</p>
     <p>Shareable link:</p>
     <div>
-      <p><%= url %></p>
-      <button><span>Copy link</span></button>
+      <p id="link"><%= url %></p>
+      <button id="copy-link"><span id="copy-status">Copy link</span></button>
     </div>
     <p>Valid until <%= folder?.shared.expiresAt %></p>
     <% } %>
   </div>
   <form action="<%= `/${folder?.id}/share-folder` %>" method="post">
-    <div>
+    <div class="form-body">
       <label for="share">Share this folder?</label>
       <select name="share" id="share">
         <option value="">Select an option</option>
@@ -28,7 +28,7 @@
         <option value="30">Yes, for 1 month</option>
       </select>
     </div>
-    <div>
+    <div class="dialog-buttons">
       <button formmethod="dialog" formnovalidate>Close</button>
       <button>Apply</button>
     </div>
