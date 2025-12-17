@@ -39,3 +39,45 @@ img {
 }
 
 /* custom */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 10px 250px;
+  background-color: rgb(19, 19, 19);
+  color: white;
+  display: flex;
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.logo > img {
+  width: 40px;
+}
+
+main {
+  padding: 40px 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+footer {
+  margin-top: auto;
+  text-align: center;
+  background-color: rgb(19, 19, 19);
+  color: white;
+  padding-block: 3px;
+}
