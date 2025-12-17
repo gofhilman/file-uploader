@@ -85,7 +85,8 @@ label {
   font-size: 1.2rem;
 }
 
-input, select {
+input,
+select {
   min-width: 300px;
   padding: 4px 8px;
   margin-block: 10px;
@@ -244,7 +245,8 @@ dialog form {
   padding-inline: 8px;
 }
 
-.dialog-buttons button, #copy-link {
+.dialog-buttons button,
+#copy-link {
   padding: 5px 15px;
   font-weight: 500;
   font-size: 1.1rem;
@@ -294,5 +296,13 @@ dialog form {
   .form-body {
     grid-template-columns: auto;
     gap: 7px;
+  }
+
+  .folder-name {
+    padding-inline: 5px;
+  }
+
+  .top-area, .bottom-area {
+    gap: 5px;
   }
 }
