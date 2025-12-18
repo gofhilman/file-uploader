@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsx app.ts",
     "dev": "tsx watch app.ts",
-    "data": "prisma studio --browser none"
+    "data": "prisma studio --browser none",
+    "postinstall": "prisma generate"
   },
   "repository": {
     "type": "git",
